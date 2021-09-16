@@ -1,4 +1,4 @@
-import { rm, mkdir } from 'fs/promises';
+import { rm, mkdir, stat } from 'fs/promises';
 import { SimpleDB } from '../lib/simple-db';
 
 describe('simple db', () => {
@@ -26,5 +26,22 @@ describe('simple db', () => {
     return file.save(newFile).then(() => {
       expect(newFile).toEqual(expect.any(Object));
     });
+  });
+
+  it('should get file by id from store folder', () => {
+    const file = new SimpleDB(rootDir);
+    const source = '../store/Kj87Cb3uL1.json';
+    const id = source.id;
+    return file
+      .get(id)
+      .then(() => {
+        return stat(rootDir);
+      })
+      .then((stats) => {
+        expect(stats.isFile()).toBe(true);
+      })
+      .catch((err) => {
+        return console.error(err);
+      });
   });
 });
