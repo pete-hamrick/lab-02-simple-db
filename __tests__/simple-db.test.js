@@ -24,7 +24,7 @@ describe('simple db', () => {
     const newFile = { exists: true };
 
     return file.save(newFile).then(() => {
-      expect(newFile).toEqual(expect.any(String));
+      expect(newFile).toEqual(expect.any(Object));
     });
   });
 });
