@@ -10,7 +10,7 @@ describe('simple db', () => {
     });
   });
 
-  it('should check if new file is saved', () => {
+  it('should check if new object has a unique id', () => {
     const file = new SimpleDB(rootDir);
     const newFile = { exists: true };
 
@@ -19,5 +19,12 @@ describe('simple db', () => {
     });
   });
 
-  it('should get');
+  it('should check if new object is saved', () => {
+    const file = new SimpleDB(rootDir);
+    const newFile = { exists: true };
+
+    return file.save(newFile).then(() => {
+      expect(newFile).toEqual(expect.any(String));
+    });
+  });
 });
