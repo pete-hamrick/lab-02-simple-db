@@ -10,18 +10,18 @@ describe('simple db', () => {
     });
   });
 
-  it('should check if a new file has been created', () => {
-    const newFile = new SimpleDB(rootDir);
-    const fileData = 'hello, world';
+  it('should check if new object is created and retrieves by the id', () => {
+    const file = new SimpleDB(rootDir);
+    const newFile = { exists: true };
 
-    return newFile
-      .keep(fileData)
+    return file
+      .save(newFile)
       .then(() => {
-        return newFile.tell();
+        return file.get(newFile.id);
       })
-      .then((message) => {
-        expect(message).toEqual(fileData);
+      .then((savedFile) => {
+        expect(savedFile).toEqual(newFile);
+        expect(savedFile.id).toEqual(newFile.id);
       });
   });
-  it.skip('should see if new file has an id', () => {});
 });
