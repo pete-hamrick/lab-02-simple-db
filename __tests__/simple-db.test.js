@@ -1,4 +1,4 @@
-import { rm, mkdir, stat, readdir } from 'fs/promises';
+import { rm, mkdir } from 'fs/promises';
 import { SimpleDB } from '../lib/simple-db';
 
 describe('simple db', () => {
@@ -38,17 +38,24 @@ describe('simple db', () => {
         });
     });
 
-    xit('should get the whole store folder using the getAll method', () => {
+    it('should get the whole store folder using the getAll method', () => {
         const newDB = new SimpleDB(rootDir);
-        const source = rootDir;
+        const file1 = { exists: true };
+        const file2 = { exists: 'yes' };
+        const expected = [
+            { exists: true, id: expect.any(String) },
+            { exists: 'yes', id: expect.any(String) },
+        ];
 
         return newDB
-            .getAll()
+            .save(file1)
             .then(() => {
-                return readdir(source);
+                newDB.save(file2);
             })
-            .then((files) => {
-                expect(files).toEqual(['Kj87Cb3uL1.json']);
+            .then(() => {
+                newDB.getAll().then((files) => {
+                    expect(files).toEqual(expect.arrayContaining(expected));
+                });
             });
     });
 });
